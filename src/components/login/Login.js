@@ -20,24 +20,27 @@ export default function Login() {
 
         event.preventDefault();
 
-      
-
         axios.post("https://mock-api.driven.com.br/api/v4/driven-plus/auth/login", {
             email: formEmail,
             password: formSenha
 		})
         .then( response => {
-            setUser(response.data);
+
+            setUser(response.data);//Salva dados no Contexto
             localStorage.setItem("user", JSON.stringify(response.data));
-            console.log(response.data);
-            
-            //navigate("/habitos");
+
+            if(!response.data.membership){//Verifica se usuário não possui plano
+
+                navigate("/subscriptions");//Não possui plano
+            }else{
+                navigate("/home");//Possui plano
+            }
+            //console.log(response.data);
         } )
         .catch((err) => {
 
             console.error(err);
             alert("Usuário ou senha incorreta!");
-            
         });
     }
 
