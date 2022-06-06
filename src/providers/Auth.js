@@ -5,12 +5,31 @@ export const AuthContext = createContext({});
 export const AuthProvider = (props) => { 
 
     const userStorage = localStorage.getItem("user");
-
-    const [user, setUser] = useState(JSON.parse(userStorage));
-
+    
+    const [user, setUser] = useState({
+        "id": null,
+        "name": null,
+        "membership": null,
+        "token": null
+    });
+    
     useEffect(() => {
         
-          setUser(JSON.parse(userStorage));
+         
+          
+            
+          if (userStorage) {
+
+            setUser(JSON.parse(userStorage));
+          } else {
+            
+            setUser({
+                "id": null,
+                "name": null,
+                "membership": null,
+                "token": null
+            });
+          }
 
     }, []);
     

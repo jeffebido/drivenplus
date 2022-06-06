@@ -9,7 +9,7 @@ import Logo from '../../img/logo-driven.svg';
 export default function Login() {
 
     const navigate = useNavigate();
-    const {setUser} = useAuth();
+    const {setUser} = useAuth([]);
 
     const [formEmail, setFormEmail] = useState("");
     const [formSenha, setFormSenha] = useState("");
@@ -26,8 +26,19 @@ export default function Login() {
 		})
         .then( response => {
 
-            setUser(response.data);//Salva dados no Contexto
-            localStorage.setItem("user", JSON.stringify(response.data));
+            setUser({
+                "id": response.data.id,
+                "name": response.data.name,
+                "membership": response.data.membership ? response.data.membership.id : null,
+                "token": response.data.token
+            });//Salva dados no Contexto
+
+            localStorage.setItem("user", JSON.stringify({
+                "id": response.data.id,
+                "name": response.data.name,
+                "membership": response.data.membership ? response.data.membership.id : null,
+                "token": response.data.token
+            }));
 
             if(!response.data.membership){//Verifica se usuário não possui plano
 

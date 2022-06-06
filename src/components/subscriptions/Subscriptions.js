@@ -42,7 +42,7 @@ export default function Subscriptions() {
             
             
             
-            { planos.map( plano => <Link to={`/subscription/${plano.id}`} ><Plano> <img src={plano.image} /> <h2>{plano.price}</h2></Plano></Link> ) }
+            { planos.map( plano => <Link to={`/subscription/${plano.id}`} ><Plano> <img src={plano.image} /> <h2>R$ {plano.price.replace(".", ",") }</h2></Plano></Link> ) }
             
             
         </div>

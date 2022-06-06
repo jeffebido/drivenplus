@@ -14,7 +14,7 @@ export default function Subscription() {
     const navigate = useNavigate();
 
     const { id } = useParams();
-    const {user} = useAuth();
+    const {user, setUser} = useAuth();
 
     const [showModal, setShowModal] = useState(false);
 
@@ -40,7 +40,18 @@ export default function Subscription() {
             
             setPlano(response.data);
             setPerks(response.data.perks );
-            //console.log(response.data.perks);
+            setUser({
+                "id": user.id,
+                "name": user.name,
+                "membership": id,
+                "token": user.token
+            });
+            localStorage.setItem("user", JSON.stringify({
+                "id": user.id,
+                "name": user.name,
+                "membership": id,
+                "token": user.token
+            }));
         });
 
      
@@ -70,7 +81,6 @@ export default function Subscription() {
         .then( response => {
 
             navigate("/home");
-            //console.log(response.data);
         } )
         .catch((err) => {
 
