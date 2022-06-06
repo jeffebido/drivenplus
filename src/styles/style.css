@@ -12,9 +12,7 @@ html, body, .root{
 	background-color: #0E0E13;
 	width: 100%;
 }
-p{
 
-}
 /* FORMULARIOS E BOTOES */
 .form-field{
 	height: 50px;
@@ -33,6 +31,13 @@ p{
 }
 .form-field::placeholder{
 	color: #7E7E7E;
+}
+.form-2-cols {
+	display: flex;
+	justify-content: space-between;
+}
+.form-2-cols .form-field{
+	width: 49%;
 }
 .btn{
 	background: #FF4791;
@@ -57,16 +62,19 @@ p{
 	height: 100%;
 	padding-left: 40px;
 	padding-right: 40px;
-	padding-bottom: 170px;
-	padding-top: 90px;
+
+	
 	background: #0E0E13;
-	min-height: 100vh;
+	
+}
+.icon{
+	display: inline-block;
 }
 .pt-20{
 	padding-top: 20px;
 }
-.pt-30{
-	padding-top: 30px;
+.pt-35{
+	padding-top: 35px;
 }
 .pb-20{
 	padding-bottom: 20px;
