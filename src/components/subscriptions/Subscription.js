@@ -7,86 +7,150 @@ import {useAuth} from "../../providers/Auth";
 import MoneyIcon from '../../img/money.svg';
 import ListIcon from '../../img/list.svg';
 import ReturnIcon from '../../img/return.svg';
-import LogoImg from '../../img/logo-driven-plus.svg';
+import CloseIcon from '../../img/close.svg';
 
 export default function Subscription() {
     
+    const navigate = useNavigate();
+
     const { id } = useParams();
+    const {user} = useAuth();
+
+    const [showModal, setShowModal] = useState(false);
 
     const [formNome, setFormNome] = useState("");
     const [formCartao, setFormCartao] = useState("");
     const [formCcv, setFormCcv] = useState("");
     const [formValidade, setFormValidade] = useState("");
 
+    const [plano, setPlano] = useState([]);
+    const [perks, setPerks] = useState([]);
 
-    function enviaForm (event) {
+    useEffect(() => {
+
+        const config = {
+            headers: { Authorization: `Bearer ${user.token}` }
+        };
+
+        const promise = axios.get(`https://mock-api.driven.com.br/api/v4/driven-plus/subscriptions/memberships/${id}`, config);
+
+        promise.then(response => {
+
+
+            
+            setPlano(response.data);
+            setPerks(response.data.perks );
+            //console.log(response.data.perks);
+        });
+
+     
+    }, []);
+
+    function openModal(event){
 
         event.preventDefault();
 
-        axios.post("https://mock-api.driven.com.br/api/v4/driven-plus/auth/login", {
-            
-		})
+        setShowModal(true);
+        
+    }
+
+    function enviaForm () {
+
+        const config = {
+            headers: { Authorization: `Bearer ${user.token}` }
+        };
+
+        axios.post("https://mock-api.driven.com.br/api/v4/driven-plus/subscriptions", {
+            membershipId: id,
+            cardName: formNome,
+            cardNumber: formCartao,
+            securityNumber: formCcv,
+            expirationDate: formValidade
+		}, config)
         .then( response => {
 
-            
+            navigate("/home");
             //console.log(response.data);
         } )
         .catch((err) => {
 
             console.error(err);
-            alert("Usuário ou senha incorreta!");
+            alert("Verifique os dados e tente novamente.");
         });
     }
 
     return (
+        
 
-        <>  
-            <Header>
-                <Link to={`/subscriptions`}>
-                    <img src={ReturnIcon}></img>
-                </Link>
-            </Header>
 
-            <Logo>
-                <img src={LogoImg}></img>
-                <h1>Driven Plus</h1>
-            </Logo>
+            plano === null ? (<div className="loading">Carregando...</div>) : (
+                
 
-            <div className="container">
+                <>
+                    <Header>
+                        <Link to={`/subscriptions`}>
+                            <img src={ReturnIcon}></img>
+                        </Link>
+                    </Header>
+                    <Logo>
+                        <img src={plano.image}></img>
+                        <h1>{plano.name}</h1>
+                    </Logo>
 
-            
-                <DescPlano>
-                    <h4>
-                        <img src={ListIcon} className="icon"/>
-                        <span>Benefícios:</span>
-                    </h4>
-                    <p>1. Brindes exclusivos</p>
-                    <p>2. Materiais bônus de web</p>
+                    <div className="container">
 
-                    <h4 className="pt-20">
-                        <img src={MoneyIcon} className="icon"/>
-                        <span>Preço:</span>
-                    </h4>
-                    <p>R$ 39,99 cobrados mensalmente</p>
-                </DescPlano>
-
-                <form onSubmit={enviaForm} className="pt-35">
-
-                    <input type="text" placeholder="Nome impresso no cartão" value={formNome} onChange={e => setFormNome(e.target.value)} className="form-field" required ></input>
-                    <input type="number" placeholder="Digitos do cartão" value={formCartao} onChange={e => setFormCartao(e.target.value)} className="form-field" required ></input>
                     
-                    <div className="form-2-cols">
-                        <input type="number" placeholder="Código de segurança" value={formCcv} onChange={e => setFormCcv(e.target.value)} className="form-field" required ></input>
-                        <input type="text" placeholder="Validade" value={formValidade} onChange={e => setFormValidade(e.target.value)} className="form-field" required ></input>
+                        <DescPlano>
+                            <h4>
+                                <img src={ListIcon} className="icon"/>
+                                <span>Benefícios:</span>
+                            </h4>
+
+                            
+                            
+                            { perks.map( item => <p>{item.title == "Solicitar brindes" ? "Brindes Exclusivos" : item.title}</p> ) }
+                            
+
+                            <h4 className="pt-20">
+                                <img src={MoneyIcon} className="icon"/>
+                                <span>Preço:</span>
+                            </h4>
+                            <p>R$ {plano.price} cobrados mensalmente</p>
+                        </DescPlano>
+
+                        <form onSubmit={openModal} className="pt-35">
+
+                            <input type="text" placeholder="Nome impresso no cartão" value={formNome} onChange={e => setFormNome(e.target.value)} className="form-field" required ></input>
+                            <input type="number" placeholder="Digitos do cartão" value={formCartao} onChange={e => setFormCartao(e.target.value)} className="form-field" required ></input>
+                            
+                            <div className="form-2-cols">
+                                <input type="number" placeholder="Código de segurança" value={formCcv} onChange={e => setFormCcv(e.target.value)} className="form-field" required ></input>
+                                <input type="text" placeholder="Validade" value={formValidade} onChange={e => setFormValidade(e.target.value)} className="form-field" required ></input>
+                            </div>
+
+                            
+                            <button type="submit" className="btn">ASSINAR</button>
+                        </form>
+
                     </div>
+                    <Modal showModal={showModal}>
+                        
+                        <img src={CloseIcon} className="btn-close" onClick={() => setShowModal(false)} />
+                        
+                        <div className="modal-box">
+                            <div className="content">
+                                Tem certeza que deseja assinar o plano <br/>{plano.name} (R$ {plano.price})
+                            </div>
+                            <div className="buttons">
+                                <button className="btn btn-modal btn-gray" onClick={() => setShowModal(false)}>NÃO</button>
+                                <button className="btn btn-modal" onClick={() => enviaForm()}>SIM</button>
+                            </div>
+                        </div>
 
-                    
-                    <button type="submit" className="btn">ASSINAR</button>
-                </form>
-
-            </div>
-            
-        </>
+                    </Modal>
+                </>
+            )
+        
     );
 }
 const Header = styled.div`
@@ -124,5 +188,51 @@ const DescPlano = styled.div`
         line-height: 16px;
         color: #FFFFFF;
         margin-bottom: 5px;
+    }
+`;
+const Modal = styled.div`
+    display: ${
+      props => props.showModal ? "flex" :  "none"
+    };
+	position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    z-index: 10;
+    align-items: center;
+    justify-content: center;
+    padding-left: 60px;
+    padding-right: 60px;
+    
+    .modal-box{
+        height: 210px;
+        width: 100%;
+        background-color: #fff;
+        border-radius: 12px;
+        padding-top: 30px;
+        padding-left: 22px;
+        padding-right: 22px;
+        padding-bottom: 10px;
+        .content{
+            font-weight: 700;
+            font-size: 18px;
+            line-height: 21px;
+            text-align: center;
+            color: #000000;
+        }
+        .buttons{
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 50px;
+        }
+    }
+    .btn-close{
+        cursor: pointer;
+        position: absolute;
+        top: 25px;
+        right: 20px;
     }
 `;
