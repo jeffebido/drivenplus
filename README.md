@@ -1,3 +1,37 @@
+<div align="center"> 
+  
+  <a href="https://drivenplus-alpha.vercel.app/" target="_blank">
+    <img src="https://github.com/jeffebido/drivenplus/blob/main/src/img/driven-plus-logo-black.png" alt="Logo">
+  </a>
+  
+[![wakatime](https://wakatime.com/badge/user/578c8c26-46da-4b46-a315-3eb46eecfb5a/project/f4b751a7-641f-4289-86f1-f7260204c004.svg)](https://wakatime.com/badge/user/578c8c26-46da-4b46-a315-3eb46eecfb5a/project/f4b751a7-641f-4289-86f1-f7260204c004)
+  
+  
+</div>
+
+<div align="center">
+
+![uses-react](https://img.shields.io/badge/REACT-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
+![Styled Components](https://img.shields.io/badge/styled--components-DB7093?style=for-the-badge&logo=styled-components&logoColor=white)
+![uses-html5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
+![uses-css](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)
+![uses-javascript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
+  
+ </div>
+ 
+  ---
+  
+ <h4 align="center">
+     Aplicação que possibilita a assinatura de um serviço online. 
+  <br/> <br/>
+     Deploy: <a href="https://drivenplus-alpha.vercel.app/" target="_blank">https://drivenplus-alpha.vercel.app/</a>
+      <br/>
+ </h4>
+  
+<div align="center">
+    <img src="https://github.com/jeffebido/drivenplus/blob/main/src/img/driven-plus.gif" alt="Logo">
+</div>
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
